@@ -1,0 +1,215 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 1000
+
+
+struct data_nascimento{
+
+	int dia;
+	int mes;
+	int ano;
+
+};
+
+struct individuo{
+
+	int id_individuo;
+	char nome[40];
+	char tipo[15];
+	int renda;
+
+	struct data_nascimento nasc;
+
+};
+
+struct familia{
+
+	int id_familia;
+	int status;
+	int renda_total, idade_indv, qtd_dependentes, qtd_crit;
+	int pts_renda, pts_idade, pts_qtdependentes, pts_totais, id_pretendente;
+
+	struct individuo indv[MAX];
+
+}faml[MAX];
+
+struct lista_de_familias{
+
+	int id_familia;
+	int status;
+	int renda_total;
+	int pts_totais, id_pretendente;
+
+}lista_faml[MAX];
+
+struct lista_contemplados{
+
+	int id_familia, qtd_crit, pts_totais;
+
+}lista_contem[MAX];
+
+
+int main ()
+{
+	int num_individuos, num_familia;
+	int i, j, k, l, m;
+	int qtd_comtemplados = 0, cond1;
+
+	printf("Declare o numero de familias.........:\n");
+	scanf("%d", &num_familia);
+
+	for(i = 0; i < num_familia; i++)
+	{
+		printf("\nInsira o ID da familia %d.........:\n", i);
+		scanf("%d", &faml[i].id_familia);
+
+		printf("Se a familia %d ja possui casa digite 1\nSe a familia %d ja esta em uma selecao digite 2\nSe a familia ja foi contemplada Digite 7\n\n", i, i);
+		printf("Digite 3 para pular\n");
+		scanf("%d", &faml[i].status);
+
+		printf("\nDeclare o numero de individuos da familia %d.........:\n", i);
+		scanf("%d", &num_individuos);
+
+		for(j = 0; j < num_individuos; j++)
+		{
+			printf("\nInsira o ID do individuo %d.........:\n", j);
+			scanf("%d", &faml[i].indv[j].id_individuo);
+
+			printf("\nInsira o nome do individuo %d.........:\n", j);
+			getchar();
+			fgets(faml[i].indv[j].nome, 40, stdin);
+
+			printf("\nInsira o tipo do individuo %d.........:\n", j);
+			getchar();
+			fgets(faml[i].indv[j].tipo, 15, stdin);
+
+			printf("\nInsira o dia de nascimento do individuo %d.........:\n", j);
+			scanf("%d", &faml[i].indv[j].nasc.dia);
+
+			printf("\nInsira o mes de nascimento do individuo %d.........:\n", j);
+			scanf("%d", &faml[i].indv[j].nasc.mes);
+
+			printf("\nInsira o ano de nascimento do individuo %d.........:\n", j);
+			scanf("%d", &faml[i].indv[j].nasc.ano);
+
+			if(faml[i].indv[j].tipo[0] == 114)
+			{
+				printf("\nInsira a renda do individuo %d.........:\n", j);
+				scanf("%d", &faml[i].indv[j].renda);
+
+				faml[i].renda_total += faml[i].indv[j].renda;
+				faml[i].idade_indv = 2020 - faml[i].indv[j].nasc.ano;
+				faml[i].id_pretendente = faml[i].indv[j].id_individuo;
+			}
+
+			if(faml[i].indv[j].tipo[0] == 111)
+			{
+				printf("\nInsira a renda do individuo %d.........:\n", j);
+				scanf("%d", &faml[i].indv[j].renda);
+
+				faml[i].renda_total += faml[i].indv[j].renda;
+			}
+
+			if(faml[i].indv[j].tipo[0] == 101 && 2020 - faml[i].indv[j].nasc.ano < 18){
+				faml[i].qtd_dependentes =+ 1;
+			}
+		}
+
+			if(faml[i].renda_total < 901 && faml[i].renda_total >= 0)
+			{
+				faml[i].pts_totais += 5;
+				faml[i].qtd_crit++;
+			}
+			if(faml[i].renda_total < 1501 && faml[i].renda_total >= 901){
+				faml[i].pts_totais += 3;
+				faml[i].qtd_crit++;
+			}
+			if(faml[i].renda_total < 2001 && faml[i].renda_total >= 1501)
+			{
+				faml[i].pts_totais += 1;
+				faml[i].qtd_crit++;
+			}
+			if(faml[i].idade_indv >= 45)
+			{
+				faml[i].pts_totais += 3;
+				faml[i].qtd_crit++;
+			}
+			if(faml[i].idade_indv >= 30 && faml[i].idade_indv <= 44)
+			{
+				faml[i].pts_totais += 2;
+				faml[i].qtd_crit++;
+			}
+			if(faml[i].idade_indv < 30)
+			{
+				faml[i].pts_totais += 1;
+				faml[i].qtd_crit++;
+			}
+			if(faml[i].qtd_dependentes >= 3)
+			{
+				faml[i].pts_totais += 3;
+				faml[i].qtd_crit++;
+			}
+			if(faml[i].qtd_dependentes == 1 || faml[i].qtd_dependentes == 2)
+			{
+				faml[i].pts_totais += 2;
+				faml[i].qtd_crit++;
+			}
+
+			if(faml[i].status != 1 && faml[i].status != 2)
+			{
+				if(i == 0 || lista_faml[i - 1].pts_totais >= faml[i].pts_totais)
+				{
+					lista_faml[i].id_familia = faml[i].id_familia;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+					lista_faml[i].status = faml[i].status;
+					lista_faml[i].renda_total = faml[i].renda_total;
+					lista_faml[i].pts_totais = faml[i].pts_totais;
+					lista_faml[i].id_pretendente = faml[i].id_pretendente;
+				}
+
+				else
+				{
+					for(k = i; k == 0; k--)
+						if(lista_faml[k - 1].pts_totais < faml[i].pts_totais)
+						{
+							lista_faml[k - 1].id_familia = faml[i].id_familia;
+							lista_faml[k - 1].status = faml[i].status;
+							lista_faml[k - 1].renda_total = faml[i].renda_total;
+							lista_faml[k - 1].pts_totais = faml[i].pts_totais;
+							lista_faml[k - 1].id_pretendente = faml[i].id_pretendente;
+							lista_faml[k].id_familia = faml[i - 1].id_familia;
+							lista_faml[k].status = faml[i - 1].status;
+							lista_faml[k].renda_total = faml[i - 1].renda_total;
+							lista_faml[k].pts_totais = faml[i - 1].pts_totais;
+							lista_faml[k].id_pretendente = faml[i - 1].id_pretendente;
+						}
+				}
+			}
+
+			if(faml[i].status == 7)
+			{
+				lista_contem[i].id_familia = faml[i].id_familia;
+				lista_contem[i].qtd_crit = faml[i].qtd_crit;
+				lista_contem[i].pts_totais = faml[i].pts_totais;
+				qtd_comtemplados++;
+			}
+	}
+
+	for(l = 0; l < num_familia; l++)
+	{
+		printf("ID da familia em %d lugar.........: %d\n", l + 1, lista_faml[l].id_familia);
+		printf("ID do pretendente da familia em %d lugar.........: %d\n", l + 1, lista_faml[l].id_pretendente);
+	}
+		printf("Digite 1 para ver a lista de familias ja contempladas\n");
+		scanf("%d", &cond1);
+
+		if(cond1 == 1)
+			for(m = 0; m < qtd_comtemplados; m++)
+			{
+				printf("Id da %d familia contemplada.........: %d\n", m + 1, lista_contem[m].id_familia);
+				printf("Quantidade de criterios atendidos pela %d familia contemplada.........: %d\n",m + 1, lista_contem[m].qtd_crit);
+				printf("Pontuação total da %d familia contemplada.........: %d\n", m + 1, lista_contem[m].pts_totais);
+			}
+
+	return 0;
+}
+
